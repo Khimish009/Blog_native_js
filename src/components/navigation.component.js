@@ -3,19 +3,30 @@ import {Component} from '../core/component'
 export class NavigationComponent extends Component {
    constructor(id){
       super(id)
+
+      this.tabs = []
    }
 
    init(){
-      let tabs = this.$el.querySelectorAll('.tab')
-      tabs.forEach(tab => {
-         tab.addEventListener('click', () => {
-            tab.classList.add('active')
-         })
-      })
+      this.$el.addEventListener('click', tabsCkickHandler.bind(this))
+   }
+
+   registerTabs(tab){
+      this.tabs = tab
    }
 }
 
+function tabsCkickHandler(event) {
+   event.preventDefault()
+   if (event.target.classList.contains('tab')) {
+      this.$el.querySelectorAll('.tab').forEach(tab => {
+         tab.classList.remove('active')
+      });
+      event.target.classList.add('active')
+      const activeTab = this.tabs.find(t => t.name === event.target.dataset.name)
 
-// function tabHandler() {
-//    console.log(ss)
-// }
+      this.tabs.forEach(t => t.component.hide())
+      activeTab.component.show()
+   }
+}  
+
