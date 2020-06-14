@@ -13,7 +13,7 @@ export class CreateComponent extends Component {
 
       this.form = new Form(this.$el, {
          title: [Validators.required],
-         fulltext: [Validators.required],
+         fulltext: [Validators.required, Validators.minLength(9)],
       })
    }
 }
@@ -22,6 +22,7 @@ export class CreateComponent extends Component {
 function submitHandker(event) {
    event.preventDefault()
 
+   // если проходит валидацию
    if(this.form.isValid()){
       const formData = {
          type: this.$el.type.value,
